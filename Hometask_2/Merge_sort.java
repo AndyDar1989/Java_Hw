@@ -7,21 +7,18 @@ public class Merge_sort {
         Random random = new Random();
         int diff = max - min;
         for (int i = 0; i < size; i++) {
-            newArray[i] = random.nextInt(diff + 1) - max;
-            // System.out.printf("%s ", newArray[i]);
-
+            newArray[i] = random.nextInt(diff + 1) + min;
         }
         return newArray;
     }
 
     public static String printArray(int[] array) {
-        String result = "";
-        for (int i = 0; i < array.length; i++) {
-            result += array[i] + " ";
-
+        String result = "[";
+        for (int i = 0; i < array.length - 1; i++) {
+            result += array[i] + ", ";
         }
+        result += array[array.length - 1] + "]";
         return result;
-
     }
 
     public static int[] divArr(int[] array) {
@@ -32,17 +29,11 @@ public class Merge_sort {
             return array;
         }
         int size = array.length / 2;
-        int[] divA = new int[size];
-        System.arraycopy(array, 0, divA, 0, size);
-        int[] divB = new int[array.length - size];
-        System.arraycopy(array, size, divB, 0, array.length - size);
-
-
+        int[] divA = Arrays.copyOfRange(array, 0, size);
+        int[] divB = Arrays.copyOfRange(array, size, array.length);
         divA = divArr(divA);
-
         divB = divArr(divB);
 
-        
         return mergeArray(divA, divB);
 
     }
@@ -52,36 +43,27 @@ public class Merge_sort {
         int posA = 0;
         int posB = 0;
         for (int i = 0; i < sortedArray.length; i++) {
-            if (posA > arrayA.length-1) {
-                int a = arrayB[posB];
-                sortedArray[i] = a;
+            if (posA > arrayA.length - 1) {
+                sortedArray[i] = arrayB[posB];
                 posB++;
-            } else if (posB > arrayB.length-1) {
-                int a = arrayA[posA];
-                sortedArray[i] = a;
+            } else if (posB > arrayB.length - 1) {
+                sortedArray[i] = arrayA[posA];
                 posA++;
             } else if (arrayA[posA] < arrayB[posB]) {
-                int a = arrayA[posA];
-                sortedArray[i] = a;
+                sortedArray[i] = arrayA[posA];
                 posA++;
             } else {
-                int b = arrayB[posB];
-                sortedArray[i] = b;
+                sortedArray[i] = arrayB[posB];
                 posB++;
             }
-
         }
-
         return sortedArray;
-
     }
 
     public static void main(String[] args) {
-        int[] myArr = createArray(10, -10, 10);
+        int[] myArr = createArray(20, -15, 45);
         System.out.println(printArray(myArr));
         int[] mySort = divArr(myArr);
         System.out.println(printArray(mySort));
-
     }
-
 }

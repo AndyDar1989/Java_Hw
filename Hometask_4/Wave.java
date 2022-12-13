@@ -60,6 +60,42 @@ public class Wave {
 
     }
 
+    public static void printArrayW(int[][] array, LinkedList<int[]>way) {
+       
+        for (int k = 0; k < way.size(); k++) {
+            int[]point = way.get(k);
+            array[point[0]][point[1]]=1;}
+        int[]pointF = way.getFirst();
+        int[]pointS = way.getLast();
+        array[pointF[0]][pointF[1]]=-3;
+        array[pointS[0]][pointS[1]]=-2;
+        for (int i = 0; i < array.length; i++) {
+            for (int j = 0; j < array.length; j++) {
+                if(array[i][j]==-1){
+                System.out.printf("%c",'\u25A0');}
+                else if(array[i][j]==1){
+                    
+                    System.out.printf((char) 27 + "[31m\u25A0"+ (char) 27 + "[0m");}
+                else if(array[i][j]==-2){
+                    
+                        System.out.printf((char) 27 + "[32m\u25A0"+ (char) 27 + "[0m");}
+                else if(array[i][j]==-3){
+                    
+                            System.out.printf((char) 27 + "[34m\u25A0"+ (char) 27 + "[0m");}            
+                else {
+                    
+                System.out.printf((char) 27 + "[31m "+ (char) 27 + "[0m");}
+                
+            }
+            System.out.println();
+
+        }
+
+    }
+
+
+
+
     public static void printArrayN(int[][] array) {
         
         for (int i = 0; i < array.length; i++) {
@@ -68,7 +104,7 @@ public class Wave {
                 System.out.print(array[i][j]);}
                 
             
-            System.out.println();}}
+            System.out.print('\n');}}
 
     public static void startEndPositions(int[][] map, int startX, int startY, int finishX, int finishY) {
         Queue<int[]> quPath = new LinkedList<int[]>();
@@ -121,20 +157,85 @@ public class Wave {
             
         }
         printArrayN(field);
+        
 
     }
 
-    public static void shortestWay(int[][]array,int startX, int startY, int finishX, int finishY){
+    public static LinkedList<int[]> shortestWay(int[][]field,int startX, int startY, int finishX, int finishY){
+        LinkedList<int[]> quPath = new LinkedList<>();
         
+        int[] move={finishX, finishY};
+        quPath.add(move);
+        int minValue = field[move[0]][move[1]];
+        if (field[finishX][finishY]==0){return null;}
+        else{
+
+        while(move[0]!= startX || move[1]!=startY){
+            move = quPath.getLast();
+            if (field[move[0] + 1][move[1]] <minValue && field[move[0] + 1][move[1]]>0) {
+                minValue = field[move[0] + 1][move[1]];
+                quPath.add(new int [] {move[0] + 1,move[1]});
+                
+                
+                
+                
+            }
+            if (field[move[0]][move[1]+1] <minValue&& field[move[0]][move[1]+1]>0) {
+               minValue = field[move[0]][move[1]+1];
+                quPath.add(new int [] {move[0],move[1]+1});
+                
+                
+               
+                
+            }
+            if (field[move[0]-1][move[1]] <minValue && field[move[0] - 1][move[1]]>0) {
+                minValue = field[move[0]-1][move[1]];
+                quPath.add(new int [] {move[0]-1,move[1]});
+                
+                
+                
+                
+                
+            }
+            if (field[move[0]][move[1]-1] < minValue && field[move[0]][move[1]-1]>0) {
+                minValue = field[move[0]][move[1]-1];
+                quPath.add(new int [] {move[0],move[1]-1});
+               
+                
+                
+               
+                }
+            
+                
+        }
+        quPath.add(new int[]{startX, startY});
+        for (int i = 0; i < quPath.size(); i++) {
+            int[]res = quPath.get(i);
+            
+            System.out.print(res[0]);
+            System.out.print(res[1]);
+            System.out.println();
+            
+        }
+        
+        return quPath;}
 
     }
 
     public static void main(String[] args) throws Exception{
-        int[][] myLab = createField(10, 10);
+        int[][] myLab = createField(20, 20);
         printArray(myLab);
         
-        startEndPositions(myLab, 1, 1, 7, 7);
+        startEndPositions(myLab, 3, 4, 11, 14);
         //printArrayN(myPath);
+        //shortestWay(myLab, 1, 1, 7, 7);
+        LinkedList<int[]>myWay = shortestWay(myLab, 3, 4, 11, 14);
+        if(myWay==null)
+        {
+            System.out.println("No path");
+        }
+        else{
+        printArrayW(myLab, myWay);}
         
         
             
